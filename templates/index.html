@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal search</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+        .column {
+            width: 45%;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .item {
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        .even-item {
+            background-color: #f0f0f0; 
+        }
+        .form-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #query-input {
+            width: 600px;
+            height: 40px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form method="POST">
+            <input type="text" id="query-input" name="query" autofocus>
+        </form>
+    </div>
+    <div class="container">
+        <div class="column">
+            <h2>Bing</h2>
+            {% for item in json_bing %}
+                <div class="item {% if loop.index0 % 2 == 0 %}even-item{% endif %}">
+                    <div class="item"><strong>Name:</strong> {{ item.name }}</div>
+                    <div class="item"><strong>URL:</strong><a href="{{ item.url }}"> {{ item.displayUrl | safe }}</a></div>
+                    <div class="item"><strong>Snippet:</strong> {{ item.snippet | safe }}</div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="column">
+            <h2>Google</h2>
+            {% for item in json_google %}
+                <div class="item {% if loop.index0 % 2 == 0 %}even-item{% endif %}">
+                    <div class="item"><strong>Title:</strong> {{ item.title }}</div>
+                    <div class="item"><strong>Link:</strong><a href="{{ item.link }}"> {{ item.formattedUrl }}</a></div>
+                    <div class="item"><strong>Snippet:</strong> {{ item.htmlSnippet | safe }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        document.getElementById("header-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+        });
+    </script>
+</body>
+</html>
